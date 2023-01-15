@@ -8,8 +8,18 @@ contextBridge.exposeInMainWorld('electronAPI', {
     openFile: () => ipcRenderer.invoke('dialog:openFile'),
     sendSync: (msg: string) => ipcRenderer.sendSync('synchronous-message', msg),
     sendAsync: (msg: string) => ipcRenderer.send('asynchronous-message', msg),
+    onUpdateCounter: (callback: any) => ipcRenderer.on('update-counter', callback),
 });
 
 ipcRenderer.on('asynchronous-reply', (_event, arg) => {
     console.log(arg); // prints "pong" in the DevTools console
 });
+
+// window.addEventListener('DOMContentLoaded', () => {
+//     const counter = document.getElementById('counter');
+//     ipcRenderer.on('update-counter', (_event, value) => {
+//         const oldValue = Number(counter.innerText);
+//         const newValue = oldValue + value;
+//         counter.innerText = newValue;
+//     });
+// });

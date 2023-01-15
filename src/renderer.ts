@@ -58,3 +58,12 @@ const btnASync = document.getElementById('btnASync');
 btnASync.addEventListener('click', () => {
     window.electronAPI.sendAsync('ping async');
 });
+
+//카운터
+const counter = document.getElementById('counter');
+window.electronAPI.onUpdateCounter((_event, value) => {
+    const oldValue = Number(counter.innerText);
+    const newValue = oldValue + value;
+    counter.innerText = newValue;
+    _event.sender.send('counter-value', newValue);
+});
