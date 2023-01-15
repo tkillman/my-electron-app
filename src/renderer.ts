@@ -28,6 +28,7 @@
 
 import './index.css';
 
+// title 변경
 console.log('👋 This message is being logged by "renderer.js", included via webpack');
 const setButton = document.getElementById('btn');
 const titleInput = document.getElementById('title');
@@ -35,4 +36,13 @@ setButton.addEventListener('click', () => {
     console.log('click', (<HTMLInputElement>titleInput).value);
     const title = (<HTMLInputElement>titleInput).value;
     window.electronAPI.setTitle(title);
+});
+
+// 파일제어
+const btnFile = document.getElementById('btnFile');
+const filePathElement = document.getElementById('filePath');
+btnFile.addEventListener('click', async () => {
+    const filePath = await window.electronAPI.openFile();
+
+    filePathElement.innerText = filePath;
 });
