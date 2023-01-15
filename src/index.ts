@@ -18,6 +18,7 @@ function handleSetTitle(event: Electron.IpcMainEvent, title: string) {
 }
 
 async function handleFileOpen(event: Electron.IpcMainInvokeEvent) {
+    console.log('handleFileOpen');
     const webContents = event.sender;
     const win = BrowserWindow.fromWebContents(webContents);
     const { canceled, filePaths } = await dialog.showOpenDialog(win);
@@ -50,7 +51,21 @@ const createWindow = (): void => {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
     ipcMain.on('set-title', handleSetTitle);
+
     ipcMain.handle('dialog:openFile', handleFileOpen);
+
+    ipcMain.on('synchronous-message', (event, arg) => {
+        console.log(arg); // prints "ping" in the Node console
+        event.returnValue = 'pong sync';
+    });
+
+    ipcMain.on('asynchronous-message', (event, arg) => {
+        console.log(arg); // prints "ping" in the Node console
+        // works like `send`, but returning a message back
+        // to the renderer that sent the original message
+        event.reply('asynchronous-reply', 'pong async');
+    });
+
     createWindow();
 });
 

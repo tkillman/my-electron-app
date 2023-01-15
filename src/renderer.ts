@@ -43,6 +43,18 @@ const btnFile = document.getElementById('btnFile');
 const filePathElement = document.getElementById('filePath');
 btnFile.addEventListener('click', async () => {
     const filePath = await window.electronAPI.openFile();
+    filePathElement.innerText = filePath ?? '';
+});
 
-    filePathElement.innerText = filePath;
+//sync 메시지 보내기
+const btnSync = document.getElementById('btnSync');
+btnSync.addEventListener('click', async () => {
+    const resultBtnSync = await window.electronAPI.sendSync('ping sync');
+    console.log('resultBtnSync', resultBtnSync);
+});
+
+//async 메시지 보내기
+const btnASync = document.getElementById('btnASync');
+btnASync.addEventListener('click', () => {
+    window.electronAPI.sendAsync('ping async');
 });
