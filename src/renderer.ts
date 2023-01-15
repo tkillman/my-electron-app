@@ -29,3 +29,10 @@
 import './index.css';
 
 console.log('👋 This message is being logged by "renderer.js", included via webpack');
+const setButton = document.getElementById('btn');
+const titleInput = document.getElementById('title');
+setButton.addEventListener('click', () => {
+    console.log('click', (<HTMLInputElement>titleInput).value);
+    const title = (<HTMLInputElement>titleInput).value;
+    window.electronAPI.setTitle(title);
+});
